@@ -29,6 +29,23 @@ function App() {
 		) : (
 			<p>Loading...</p>
 		)}
+		<h2>Question</h2>
+		<div>
+			<input type="radio" id="one" name="answer" value="1" />
+				<label for="one">1</label>
+		</div>
+		<div>
+			<input type="radio" id="two" name="answer" value="2" />
+				<label for="two">2</label>
+		</div>
+		<div>
+			<input type="radio" id="three" name="answer" value="3" />
+				<label for="three">3</label>
+		</div>
+		<div>
+			<input type="radio" id="four" name="answer" value="4" />
+				<label for="four">4</label>
+		</div>
     </div>
   );
 }
