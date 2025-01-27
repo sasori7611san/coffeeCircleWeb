@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import React,{useEffect, useState} from 'react';
 
-function App() {
+const App: React.FC = () => {
 	//API空のデータ表示を画面に追加
 	const [data, setData] = useState(null);//データ状態を管理
 	//基本動作
