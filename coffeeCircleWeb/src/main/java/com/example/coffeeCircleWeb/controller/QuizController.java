@@ -3,6 +3,7 @@ package com.example.coffeeCircleWeb.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,13 @@ import com.example.coffeeCircleWeb.service.QuizService;
 
 @RestController
 @RequestMapping("/api/quiz")
+@CrossOrigin(origins = "http://localhost:3000")//ReactのURL
 public class QuizController {
 	
+
 	@Autowired
 	private QuizService quizService;
+	
 	
 	@GetMapping("/questions")
 	public List<Question> getQuestions(@RequestParam(defaultValue="3") int count){
