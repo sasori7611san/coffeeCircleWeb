@@ -1,20 +1,51 @@
 package com.example.coffeeCircleWeb.service;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import jakarta.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.coffeeCircleWeb.model.Question;
+import com.example.coffeeCircleWeb.model.Questions;
+import com.example.coffeeCircleWeb.repository.QuestionsRepository;
 
 @Service
 public class QuizService {
+	
+	@Autowired
+	private QuestionsRepository questionRepository;
+	
+	// 1. 全ての質問を取得
+    public List<Questions> getAllQuestions() {
+        return questionRepository.findAll();
+    }
+    
+    // 2. 特定の質問を取得
+    public Optional<Questions> getQuestionById(Integer id) {
+        return questionRepository.findById(id);
+    }
+
+    // 3. 質問を新規作成
+    public Questions createQuestion(Questions question) {
+        return questionRepository.save(question);
+    }
+    
+    // 4. 質問を更新
+    public Questions updateQuestion(Integer id, Questions updatedQuestion) {
+        Optional<Questions> existingQuestion = questionRepository.findById(id);
+        if (existingQuestion.isPresent()) {
+            updatedQuestion.setQuestionId(id);
+            return questionRepository.save(updatedQuestion);
+        } else {
+            throw new RuntimeException("Question not found with ID: " + id);
+        }
+    }
+
+    // 5. 質問を削除
+    public void deleteQuestion(Integer id) {
+        questionRepository.deleteById(id);
+    }
+	/*
 	private List<Question> questions = new ArrayList<>();
 	
 	@PostConstruct
@@ -56,4 +87,5 @@ public class QuizService {
 				.map(q -> q.getAnswer() == userAnswer)
 				.orElse(false);
 	}
+	*/
 }
