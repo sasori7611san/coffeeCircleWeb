@@ -2,6 +2,7 @@ package com.example.coffeeCircleWeb.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.coffeeCircleWeb.model.Choices;
+import com.example.coffeeCircleWeb.model.CollectAnswers;
 import com.example.coffeeCircleWeb.model.Questions;
+import com.example.coffeeCircleWeb.model.QuizRequest;
 import com.example.coffeeCircleWeb.service.QuizService;
 
 @RestController
@@ -39,7 +43,27 @@ public class QuizController {
     
     // 3. 質問を新規作成
     @PostMapping
-    public Questions createQuestion(@RequestBody Questions question) {
+    public Questions createQuestion(@RequestBody QuizRequest quizRequest) {
+    	// QuizRequestからQuestionsエンティティを生成
+    	Questions question = new Questions();
+    	question.setQuestionText(quizRequest.getQuestion());
+    	question.setExplanation(quizRequest.getExplanation());
+    	
+    	// Choicesを設定
+    	List<Choices> choicesList = quizRequest.getChoices().stream()
+    			.map(choice -> {
+    				Choices c = new Choices();
+    				c.setChoiceText(choice);
+    				return c;
+    			})
+    			.collect(Collectors.toList());
+    	question.setChoices(choicesList);
+    	
+    	// 正解を設定
+    	CollectAnswers collectAnswer = new CollectAnswers();
+    	collectAnswer.setCollectChoiceId(quizRequest.getCorrectAnswer());
+    	question.setCollectAnswer(collectAnswer);
+    	
         return quizService.createQuestion(question);
     }
     
