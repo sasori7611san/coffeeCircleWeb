@@ -7,48 +7,51 @@ interface Radio {
 }
 
 const Top: React.FC = () => {
-	//選択中のラジオボタン値
-	const [selected,setSelected] = useState("one");
-	//ラジオボタン切り替え
-	const changeValue = (event: React.ChangeEvent<HTMLInputElement>) => setSelected(event.target.value);
-	//ラジオボタンの各値
-	const radioButtons: Radio[] = [
-		{
-			label: "1.",
-			value: "one"
-		},
-		{
-			label: "2.",
-			value: "two"
-		},
-		{
-			label: "3.",
-			value: "three"
-		},
-		{
-			label: "4.",
-			value: "four"
-		}
-	]
+	//20250216 Chat-GPTと相談
+	const location = useLocation();
+	const quizzes = location.state?.quizzes || [];
+//	//選択中のラジオボタン値
+//	const [selected,setSelected] = useState("one");
+//	//ラジオボタン切り替え
+//	const changeValue = (event: React.ChangeEvent<HTMLInputElement>) => setSelected(event.target.value);
+//	//ラジオボタンの各値
+//	const radioButtons: Radio[] = [
+//		{
+//			label: "1.",
+//			value: "one"
+//		},
+//		{
+//			label: "2.",
+//			value: "two"
+//		},
+//		{
+//			label: "3.",
+//			value: "three"
+//		},
+//		{
+//			label: "4.",
+//			value: "four"
+//		}
+//	]
   return (
-    <div className="App">
-		<h2>問題</h2>
-		<p>○○××etc...</p>
-		<div className="Answer">
-		{radioButtons.map(radio => {
-			return(
-				<div className="AnswerChoice">
-					<input className="AnswerInput" type="radio" name="choice"
-						value={radio.value} checked={radio.value === selected} onChange={changeValue}/>
-					<label className="Choices">
-						<span className="labels">{radio.label}</span>
-					</label>
+	<div>
+		<h2>Challenge</h2>
+		{quizzes.length > 0 ? (
+			quizzes.map((quiz, index) => (
+				<div key={index}>
+					<p>問題：{quiz.question}</p>
+					<ul>
+						<li>{quiz.choice1}</li>
+						<li>{quiz.choice2}</li>
+						<li>{quiz.choice3}</li>
+						<li>{quiz.choice4}</li>
+					</ul>
 				</div>
-			)
-		})}			
-		</div>
-		<div>{selected}を選択</div>
-    </div>
-  );
+			))
+		) : (
+			<p>クイズが見つかりませんでした。</p>
+		)}
+	</div>
+	);
 };
 export default Top;

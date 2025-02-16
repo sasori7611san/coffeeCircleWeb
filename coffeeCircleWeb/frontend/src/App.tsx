@@ -8,6 +8,7 @@ import Create from "./components/pages/Create"
 const Home: React.FC = () => {
 	//API空のデータ表示を画面に追加
 	const [data, setData] = useState(null);//データ状態を管理
+	const navigate = useNavigate();
 	//基本動作
 	useEffect(() => {
 		fetch('/api/endpoint')//プロキシ設定を利用する為、フルURLは不要
@@ -25,18 +26,34 @@ const Home: React.FC = () => {
 				console.error(`API call failed:`, error);//エラーハンドリング
 			});
 	},[]);//空の依存配列を指定することで、コンポーネントの初回レンダリング時に実行
+	// Let's Challerngeをクリックしたときの処理
+	const handleChallengeClick = async () => {
+		try{
+			const response = await fetch("/api/quiz/random?count=3");// ランダムに3問取得するAPI
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			const quizData = await response.json();
+			navigate("/top", { state: {questions: quizData}});
+		} catch(error) {
+			console.error("Failed to fetch questions:",error);
+		}
+	};
 
   return (
 	<div>
-		<h1>APIからデータ</h1>
-		{data ? (
+		{/*<h1>APIからデータ</h1>
+		data ? (
 			<pre>{JSON.stringify(data,null,2)}</pre>//データを画面に表示
 		) : (
 			<p>Loading...</p>
 		)}
-	
 		<Link to="/top">Topへ</Link>
-		<Link to="/create">クイズ作成へ</Link>	
+		<Link to="/create">クイズ作成へ</Link>
+		*/}	
+		<h1>Coffee Quiz App</h1>
+		<button onClick={handleChallengeClick}>Let's Challenge</button>
+		<Link to="/create">クイズ作成へ</Link>
 	</div>
   );};
 
@@ -47,7 +64,7 @@ const App: React.FC = () => {
 				<h1>Coffee Quiz App</h1>
 				<nav>
 					<ul>
-						<li><Link to="/top">Topへ</Link></li>
+						<li><Link to="/top">Let's Challenge</Link></li>
 						<li><Link to="/create">クイズ作成へ</Link></li>
 					</ul>
 				</nav>

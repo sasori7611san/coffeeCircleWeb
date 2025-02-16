@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.coffeeCircleWeb.model.Choices;
@@ -61,7 +62,7 @@ public class QuizController {
     	
     	// 正解を設定
     	CollectAnswers collectAnswer = new CollectAnswers();
-    	collectAnswer.setCollectChoiceId(quizRequest.getCorrectAnswer());
+    	collectAnswer.setCollectChoiceId(quizRequest.getcollectAnswer());
     	question.setCollectAnswer(collectAnswer);
     	
         return quizService.createQuestion(question);
@@ -78,6 +79,12 @@ public class QuizController {
     public void deleteQuestion(@PathVariable Integer id) {
         quizService.deleteQuestion(id);
     }
+    
+    // 6. ランダムに問題を取得
+    @GetMapping("/random")
+    public List<Questions> getRandomQuestions(@RequestParam int count) {
+    	return quizService.getRandomQuestions(count);
+    }
 	
 	/*
 	@GetMapping("/questions")
@@ -87,8 +94,8 @@ public class QuizController {
 	
 	@PostMapping("/answer")
 	public AnswerResult submitAnswer(@RequestParam int questionNumber, @RequestParam int userAnswer) {
-		boolean isCorrect = quizService.checkAnswer(questionNumber, userAnswer);
-		return new AnswerResult(isCorrect, isCorrect ? 10 : 0);
+		boolean iscollect = quizService.checkAnswer(questionNumber, userAnswer);
+		return new AnswerResult(iscollect, iscollect ? 10 : 0);
 	}
 	*/
 }

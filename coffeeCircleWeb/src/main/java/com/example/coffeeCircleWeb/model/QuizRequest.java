@@ -5,7 +5,7 @@ import java.util.List;
 public class QuizRequest {
 	private String question;
 	private List<String> choices;
-	private Integer correctAnswer;
+	private Integer collectAnswer;
 	private String explanation;
 	
 	public String getQuestion() {
@@ -20,11 +20,11 @@ public class QuizRequest {
 	public void setChoices(List<String> choices) {
 		this.choices = choices;
 	}
-	public Integer getCorrectAnswer() {
-		return correctAnswer;
+	public Integer getcollectAnswer() {
+		return collectAnswer;
 	}
-	public void setCorrectAnswer(String correctAnswer) {
-		this.correctAnswer = Integer.parseInt(correctAnswer);
+	public void setcollectAnswer(String collectAnswer) {
+		this.collectAnswer = Integer.parseInt(collectAnswer);
 	}
 	public String getExplanation() {
 		return explanation;
