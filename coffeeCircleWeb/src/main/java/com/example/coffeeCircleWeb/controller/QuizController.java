@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.coffeeCircleWeb.model.Choices;
 import com.example.coffeeCircleWeb.model.CollectAnswers;
 import com.example.coffeeCircleWeb.model.Questions;
+import com.example.coffeeCircleWeb.model.Quiz;
 import com.example.coffeeCircleWeb.model.QuizRequest;
 import com.example.coffeeCircleWeb.service.QuizService;
 
@@ -82,7 +83,7 @@ public class QuizController {
     
     // 6. ランダムに問題を取得
     @GetMapping("/random")
-    public List<Questions> getRandomQuestions(@RequestParam int count) {
+    public List<Quiz> getRandomQuestions(@RequestParam int count) {
     	return quizService.getRandomQuestions(count);
     }
 	

@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.coffeeCircleWeb.model.Questions;
+import com.example.coffeeCircleWeb.model.Quiz;
 import com.example.coffeeCircleWeb.repository.QuestionsRepository;
+import com.example.coffeeCircleWeb.repository.QuizRepository;
 
 @Service
 public class QuizService {
 	
 	@Autowired
 	private QuestionsRepository questionRepository;
+	@Autowired
+	private QuizRepository quizRepository;
+	
 	
 	// 1. 全ての質問を取得
     public List<Questions> getAllQuestions() {
@@ -44,6 +49,10 @@ public class QuizService {
     // 5. 質問を削除
     public void deleteQuestion(Integer id) {
         questionRepository.deleteById(id);
+    }
+    // 6. ランダムに指定した問題数取得
+    public List<Quiz> getRandomQuestions(Integer count) {
+    	return quizRepository.findRandomQuizzes(count);
     }
 	/*
 	private List<Question> questions = new ArrayList<>();
