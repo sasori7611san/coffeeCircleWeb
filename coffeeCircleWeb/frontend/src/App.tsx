@@ -1,6 +1,6 @@
 import './App.css';
 import React,{useEffect, useState} from 'react';
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Link, Routes, Route, useNavigate } from "react-router-dom";
 
 import Top from "./components/pages/Top";
 import Create from "./components/pages/Create"
@@ -42,19 +42,10 @@ const Home: React.FC = () => {
 
   return (
 	<div>
-		{/*<h1>APIからデータ</h1>
-		data ? (
-			<pre>{JSON.stringify(data,null,2)}</pre>//データを画面に表示
-		) : (
-			<p>Loading...</p>
-		)}
-		<Link to="/top">Topへ</Link>
-		<Link to="/create">クイズ作成へ</Link>
-		*/}	
-		<h1>Coffee Quiz App</h1>
 		<button onClick={handleChallengeClick}>Let's Challenge</button>
 		<Link to="/create">クイズ作成へ</Link>
 	</div>
+
   );};
 
 const App: React.FC = () => {
@@ -62,12 +53,7 @@ const App: React.FC = () => {
 		<BrowserRouter>
 			<div>
 				<h1>Coffee Quiz App</h1>
-				<nav>
-					<ul>
-						<li><Link to="/top">Let's Challenge</Link></li>
-						<li><Link to="/create">クイズ作成へ</Link></li>
-					</ul>
-				</nav>
+				{/*画面遷移先の指定*/}
 				<Routes>
 					{/*Homeを"/"にマッピング */}
 					<Route path="/" element={<Home />} />

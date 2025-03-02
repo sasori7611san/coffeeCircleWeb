@@ -2,22 +2,31 @@ package com.example.coffeeCircleWeb.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.coffeeCircleWeb.model.Choice;
+import com.example.coffeeCircleWeb.model.CollectAnswers;
 import com.example.coffeeCircleWeb.model.Questions;
-import com.example.coffeeCircleWeb.model.Quiz;
+import com.example.coffeeCircleWeb.model.QuizDTO;
+import com.example.coffeeCircleWeb.repository.ChoicesRepository;
+import com.example.coffeeCircleWeb.repository.CollectAnswersRepository;
 import com.example.coffeeCircleWeb.repository.QuestionsRepository;
-import com.example.coffeeCircleWeb.repository.QuizRepository;
+//import com.example.coffeeCircleWeb.repository.QuizRepository;
 
 @Service
 public class QuizService {
 	
 	@Autowired
 	private QuestionsRepository questionRepository;
+//	@Autowired
+//	private QuizRepository quizRepository;
 	@Autowired
-	private QuizRepository quizRepository;
+	private ChoicesRepository choicesRepository;
+	@Autowired
+	private CollectAnswersRepository collectAnswersRepository;
 	
 	
 	// 1. 全ての質問を取得
@@ -51,8 +60,25 @@ public class QuizService {
         questionRepository.deleteById(id);
     }
     // 6. ランダムに指定した問題数取得
-    public List<Quiz> getRandomQuestions(Integer count) {
-    	return quizRepository.findRandomQuizzes(count);
+    public List<QuizDTO> getRandomQuestions(Integer count) {
+    	List<Questions> questions = questionRepository.findRandomQuestions(count);
+    	return questions.stream().map(question -> {
+    		List<String> choices = choicesRepository.findByQuestionId(question.getQuestionId())
+    				.stream()
+    				.map(Choice::getChoiceText)
+    				.collect(Collectors.toList());
+    		CollectAnswers answer = collectAnswersRepository.findByQuestionId(question.getQuestionId());
+    		String collectAnswer = answer != null ? choicesRepository.findById(answer.getCollectChoiceId()).get().getChoiceText() : null;
+    		
+    		return new QuizDTO(
+    				question.getQuestionId(),
+    				question.getQuestionText(),
+    				question.getExplanation(),
+    				choices,
+    				collectAnswer
+    				);
+    	}).collect(Collectors.toList());
+
     }
 	/*
 	private List<Question> questions = new ArrayList<>();

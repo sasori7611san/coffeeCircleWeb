@@ -1,57 +1,46 @@
 import React,{useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 
-//ラジオボタンの設定
-interface Radio {
-	label: string
-	value: string
+interface Choice {
+	choiceText: string;
+}
+
+interface Question {
+	questionId: number;
+	questionText: string;
+	explanation: string;
+	choices: Choice[];
 }
 
 const Top: React.FC = () => {
-	//20250216 Chat-GPTと相談
-	const location = useLocation();
-	const quizzes = location.state?.quizzes || [];
-//	//選択中のラジオボタン値
-//	const [selected,setSelected] = useState("one");
-//	//ラジオボタン切り替え
-//	const changeValue = (event: React.ChangeEvent<HTMLInputElement>) => setSelected(event.target.value);
-//	//ラジオボタンの各値
-//	const radioButtons: Radio[] = [
-//		{
-//			label: "1.",
-//			value: "one"
-//		},
-//		{
-//			label: "2.",
-//			value: "two"
-//		},
-//		{
-//			label: "3.",
-//			value: "three"
-//		},
-//		{
-//			label: "4.",
-//			value: "four"
-//		}
-//	]
-  return (
-	<div>
-		<h2>Challenge</h2>
-		{quizzes.length > 0 ? (
-			quizzes.map((quiz, index) => (
-				<div key={index}>
-					<p>問題：{quiz.question}</p>
-					<ul>
-						<li>{quiz.choice1}</li>
-						<li>{quiz.choice2}</li>
-						<li>{quiz.choice3}</li>
-						<li>{quiz.choice4}</li>
-					</ul>
-				</div>
-			))
-		) : (
-			<p>クイズが見つかりませんでした。</p>
-		)}
-	</div>
+
+	const [questions, setQuestions] = useState<Question[]>([]);
+	
+	useEffect(() => {
+		fetch('/api/quiz/random?count=3')
+		.then(response => response.json())
+		.then(data => setQuestions(data as Question[]))
+		.catch(error => console.error('Error fetching questions:', error));
+	},[]);
+ 	return (
+		<div>
+			<h2>Challenge</h2>
+			{questions.length > 0 ? (
+				questions.map((quiz, index) => (
+					<div key={index}>
+						<h2>{quiz.questionText}</h2>
+						<ul>
+							{quiz.choices.map((choice, i) => (
+								<li key={i}>{choice.choiceText}</li>
+							))}
+						</ul>
+					</div>
+				))
+			) : (
+				<p>Loading...</p>
+			)}
+			<Link to="">戻る</Link>
+		</div>
 	);
 };
 export default Top;

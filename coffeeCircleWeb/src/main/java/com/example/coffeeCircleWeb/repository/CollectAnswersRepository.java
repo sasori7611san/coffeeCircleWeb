@@ -6,4 +6,6 @@ import com.example.coffeeCircleWeb.model.CollectAnswers;
 
 public interface CollectAnswersRepository extends JpaRepository<CollectAnswers, Integer> {
 
+	CollectAnswers findByQuestionId(Integer questionId);
+	Integer getCorrectChoiceId();
 }
