@@ -2,13 +2,10 @@ package com.example.coffeeCircleWeb.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.coffeeCircleWeb.model.Choice;
-import com.example.coffeeCircleWeb.model.CollectAnswers;
 import com.example.coffeeCircleWeb.model.Questions;
 import com.example.coffeeCircleWeb.model.QuizDTO;
 import com.example.coffeeCircleWeb.repository.ChoicesRepository;
@@ -28,6 +25,11 @@ public class QuizService {
 	@Autowired
 	private CollectAnswersRepository collectAnswersRepository;
 	
+	private final QuestionsRepository questionsRepository;
+	
+	public QuizService(QuestionsRepository questionsRepository) {
+		this.questionsRepository = questionsRepository;
+	}
 	
 	// 1. 全ての質問を取得
     public List<Questions> getAllQuestions() {
@@ -60,25 +62,26 @@ public class QuizService {
         questionRepository.deleteById(id);
     }
     // 6. ランダムに指定した問題数取得
-    public List<QuizDTO> getRandomQuestions(Integer count) {
-    	List<Questions> questions = questionRepository.findRandomQuestions(count);
-    	return questions.stream().map(question -> {
-    		List<String> choices = choicesRepository.findByQuestionId(question.getQuestionId())
-    				.stream()
-    				.map(Choice::getChoiceText)
-    				.collect(Collectors.toList());
-    		CollectAnswers answer = collectAnswersRepository.findByQuestionId(question.getQuestionId());
-    		String collectAnswer = answer != null ? choicesRepository.findById(answer.getCollectChoiceId()).get().getChoiceText() : null;
-    		
-    		return new QuizDTO(
-    				question.getQuestionId(),
-    				question.getQuestionText(),
-    				question.getExplanation(),
-    				choices,
-    				collectAnswer
-    				);
-    	}).collect(Collectors.toList());
-
+    // public List<QuizDTO> getRandomQuestions(Integer count) {
+    public List<QuizDTO> getRandomQuestions(int count) {
+//    	List<Questions> questions = questionRepository.findRandomQuestions(count);
+//    	return questions.stream().map(question -> {
+//    		List<String> choices = choicesRepository.findByQuestionId(question.getQuestionId())
+//    				.stream()
+//    				.map(Choice::getChoiceText)
+//    				.collect(Collectors.toList());
+//    		CollectAnswers answer = collectAnswersRepository.findByQuestionId(question.getQuestionId());
+//    		String collectAnswer = answer != null ? choicesRepository.findById(answer.getCollectChoiceId()).get().getChoiceText() : null;
+//    		
+//    		return new QuizDTO(
+//    				question.getQuestionId(),
+//    				question.getQuestionText(),
+//    				question.getExplanation(),
+//    				choices,
+//    				collectAnswer
+//    				);
+//    	}).collect(Collectors.toList());
+    	return questionsRepository.findRandomQuestions(count);
     }
 	/*
 	private List<Question> questions = new ArrayList<>();
