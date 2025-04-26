@@ -25,6 +25,7 @@ import com.example.coffeeCircleWeb.service.QuizService;
 
 @RestController
 @RequestMapping("/api/quiz")
+//@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")//ReactのURL
 public class QuizController {
 	
@@ -48,7 +49,8 @@ public class QuizController {
     }
     
     // 3. 質問を新規作成
-    @PostMapping
+    //@PostMapping
+    @PostMapping("/quiz")
     public Questions createQuestion(@RequestBody QuizRequest quizRequest) {
     	// QuizRequestからQuestionsエンティティを生成
     	Questions question = new Questions();

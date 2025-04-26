@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,10 +15,13 @@ public class Choice {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer	id;
+    @Column(name = "choice_id")
+    private Integer	choiceId;
 
-    @Column(name = "question_id")
-    private Integer questionId;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    //private Integer questionId;
+    private Questions question;
 
     @Column(name = "choice_text")
     private String choiceText;
@@ -24,13 +29,18 @@ public class Choice {
     // コンストラクタ
     public Choice() {}
 
-    public Choice(Integer questionId, String choiceText) {
-        this.questionId = questionId;
+//    public Choice(Integer questionId, String choiceText) {
+//        this.questionId = questionId;
+//        this.choiceText = choiceText;
+//    }
+    public Choice(Questions question, String choiceText) {
+        this.question = question;
         this.choiceText = choiceText;
     }
 
     // ゲッター・セッター
-    public Integer getId() { return id; }
-    public Integer getQuestionId() { return questionId; }
+    public Integer getId() { return choiceId; }
+    //public Integer getQuestionId() { return questionId; }
+    public Questions getQuestion() { return question; }
     public String getChoiceText() { return choiceText; }
 }

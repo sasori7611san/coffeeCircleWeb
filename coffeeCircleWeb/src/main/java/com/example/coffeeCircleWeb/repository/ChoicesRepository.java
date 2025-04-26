@@ -8,5 +8,5 @@ import com.example.coffeeCircleWeb.model.Choice;
 
 public interface ChoicesRepository extends JpaRepository<Choice, Integer> {
 
-	List<Choice> findByQuestionId(Integer questionId);
+	List<Choice> findByQuestion_QuestionId(Integer questionId);
 }

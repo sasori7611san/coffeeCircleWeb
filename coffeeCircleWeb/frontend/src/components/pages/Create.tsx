@@ -20,10 +20,6 @@ const Create: React.FC = () => {
 
     const quizData = {
       question,
-//      choice1: choices[0],
-//      choice2: choices[1],
-//      choice3: choices[2],
-//      choice4: choices[3],
 	  choices,
       correctChoice,
       explanation,
@@ -32,7 +28,10 @@ const Create: React.FC = () => {
     try {
       const response = await fetch("http://localhost:8080/api/quiz", { //Controllerのエンドポイント(@RequestMappingの括弧記載)niに合わせる
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+			 "Content-Type": "application/json" ,
+			 "Accept": "application/json"
+		 },
         body: JSON.stringify(quizData),
       });
 

@@ -12,7 +12,7 @@ public class CorsConfig {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")//全エンドポイントに対してCORSを適用
+				registry.addMapping("/api/**")//全エンドポイントに対してCORSを適用
 					.allowedOrigins("http://localhost:3000")//フロントエンドのURL
 					.allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
 					.allowedHeaders("*")
