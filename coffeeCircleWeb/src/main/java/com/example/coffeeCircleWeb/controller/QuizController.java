@@ -25,7 +25,6 @@ import com.example.coffeeCircleWeb.service.QuizService;
 
 @RestController
 @RequestMapping("/api/quiz")
-//@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")//ReactのURL
 public class QuizController {
 	
@@ -49,8 +48,7 @@ public class QuizController {
     }
     
     // 3. 質問を新規作成
-    //@PostMapping
-    @PostMapping("/quiz")
+    @PostMapping
     public Questions createQuestion(@RequestBody QuizRequest quizRequest) {
     	// QuizRequestからQuestionsエンティティを生成
     	Questions question = new Questions();
@@ -59,18 +57,32 @@ public class QuizController {
     	
     	// Choicesを設定
     	List<Choices> choicesList = quizRequest.getChoices().stream()
-    			.map(choice -> {
-    				Choices c = new Choices();
-    				c.setChoiceText(choice);
-    				return c;
-    			})
+    			.map(dto -> {
+    				Choices choice = new Choices();
+    				choice.setChoiceNum(dto.getChoiceNum());
+    				choice.setChoiceText(dto.getChoiceText());
+    				choice.setQuestion(question);
+    				return choice;
+    				}) // ← コンストラクタでquestionも設定
     			.collect(Collectors.toList());
+    	for (Choices c : choicesList) {
+    		c.setQuestion(question);
+    	}
     	question.setChoices(choicesList);
     	
     	// 正解を設定
-    	CollectAnswers collectAnswer = new CollectAnswers();
-    	collectAnswer.setCollectChoiceId(quizRequest.getcollectAnswer());
-    	question.setCollectAnswer(collectAnswer);
+    	CollectAnswers correctAnswer = new CollectAnswers();
+    	correctAnswer.setCorrectChoiceId(quizRequest.getCorrectChoice());
+    	correctAnswer.setQuestion(question); // ← 一対一関連付けも必要
+    	
+    	// 正解のChoicesオブジェクトを取得してセット
+    	Choices correctChoice = choicesList.stream()
+    	    .filter(c -> c.getChoiceNum() == quizRequest.getCorrectChoice())
+    	    .findFirst()
+    	    .orElseThrow(() -> new IllegalArgumentException("正解の選択肢が見つかりません"));
+    	
+    	correctAnswer.setCollectChoice(correctChoice);
+    	question.setCollectAnswer(correctAnswer);
     	
         return quizService.createQuestion(question);
     }
@@ -93,16 +105,4 @@ public class QuizController {
     	return quizService.getRandomQuestions(count);
     }
 	
-	/*
-	@GetMapping("/questions")
-	public List<Question> getQuestions(@RequestParam(defaultValue="3") int count){
-		return quizService.getRandomQuestions(count);
-	}
-	
-	@PostMapping("/answer")
-	public AnswerResult submitAnswer(@RequestParam int questionNumber, @RequestParam int userAnswer) {
-		boolean iscollect = quizService.checkAnswer(questionNumber, userAnswer);
-		return new AnswerResult(iscollect, iscollect ? 10 : 0);
-	}
-	*/
 }

@@ -23,7 +23,7 @@ public class QuizService {
 	@Autowired
 	private ChoicesRepository choicesRepository;
 	@Autowired
-	private CollectAnswersRepository collectAnswersRepository;
+	private CollectAnswersRepository correctAnswersRepository;
 	
 	private final QuestionsRepository questionsRepository;
 	

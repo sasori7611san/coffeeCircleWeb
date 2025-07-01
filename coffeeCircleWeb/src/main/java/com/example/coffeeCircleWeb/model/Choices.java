@@ -26,7 +26,7 @@ public class Choices {
 	private Integer choiceId;
 	
 	@Column(name = "choice_num", nullable = false)
-	private Byte choiceNum;
+	private Integer choiceNum;
 	
 	@Column(name = "choice_text", nullable = false)
 	private String choiceText;
@@ -37,7 +37,7 @@ public class Choices {
     private Questions question;
 	
     // コンストラクタ
-    public Choices(Questions question, Byte choiceNum, String choiceText) {
+    public Choices(Questions question, Integer choiceNum, String choiceText) {
         this.question = question;
         this.choiceNum = choiceNum;
         this.choiceText = choiceText;

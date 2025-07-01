@@ -25,19 +25,15 @@ public class CollectAnswers {
 	@Column(name = "answer_id")
 	private Integer answerId;
 	
-	
-	//private Integer questioId;
-	
 	@Column(name = "correct_choice_id", nullable = false)
-	private Integer collectChoiceId;
+	private Integer correctChoiceId;
 	
 	//正解と一対一で問題と関連
     @OneToOne
     @JoinColumn(name = "question_id", nullable = false)
      private Questions question;
-
-//    //正解と一対一で選択肢と関連
-//    @OneToOne
-//    @JoinColumn(name = "correct_choice_id", nullable = false)
-//    private Choices correctChoice;
+	
+	@OneToOne
+	@JoinColumn(name = "collect_choice_id", nullable = false)
+	private Choices collectChoice;
 }

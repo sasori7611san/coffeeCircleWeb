@@ -17,11 +17,18 @@ const Create: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+	
+	const formattedChoices = choices.map((choice, index) => ({
+		choiceNum: index + 1,
+		choiceText: choice,
+	}));
 
     const quizData = {
       question,
-	  choices,
-      correctChoice,
+//	  choices,
+//      correctChoice,
+	  choices: formattedChoices,
+	  correctChoice: correctChoice + 1,
       explanation,
     };
 
@@ -30,9 +37,10 @@ const Create: React.FC = () => {
         method: "POST",
         headers: {
 			 "Content-Type": "application/json" ,
-			 "Accept": "application/json"
+			 Accept: "application/json"
 		 },
         body: JSON.stringify(quizData),
+		credentials: "include",
       });
 
       if (!response.ok) {
